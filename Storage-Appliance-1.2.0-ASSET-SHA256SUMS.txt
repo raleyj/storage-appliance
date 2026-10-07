@@ -1,0 +1,6 @@
+9dbdc8b5c06afe69e4c799a5d0f1811ad67d65cd3ec08630a11ddc341aa0be56  Storage-Appliance-1.2.0.ova.part01
+c38d4885cb151b3f011d354819d1bd330468beae1ffc9fa0af17088f7b8e73d6  Storage-Appliance-1.2.0.ova.part02
+7b44f1b459d0550add2688a718e9e2f219f2a2593d6e7503e1b6304f16eea769  Join-Storage-Appliance-1.2.0.ps1
+2096de48d2be82c8035894c9c0dcb95a45f9ed6ee1a73bc01843a90ac5c75775  join-storage-appliance-1.2.0.sh
+c67c6c7b005b51cd97d3595b54a4c551c06b05998c08dc3f6e80a6b008d19889  Storage-Appliance-1.2.0-update.tar.gz
+673217c2e52704c630fe3fcc32fc33b393c3ddba7d301b114caebfb5cd741ee9  Storage-Appliance-1.2.0-public-metadata.zip
