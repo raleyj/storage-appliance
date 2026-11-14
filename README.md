@@ -1,72 +1,26 @@
 # VCF Storage Appliance
 
-The VCF Storage Appliance is a deployable Ubuntu-based OVA that consolidates three common VMware Cloud Foundation lab services behind one hardened web-management interface:
+The VCF Storage Appliance provides SFTP backup targets, a private Harbor registry, and an authenticated publisher for subscribed vCenter Content Libraries from one Ubuntu OVA.
 
-- SFTP backup targets with per-client authentication, quotas, and approved-network controls
-- A private Harbor registry for OCI images and Helm charts
-- A publisher for subscribed vCenter Content Libraries
+Version **1.4.0** is the current GA release. Download the assets from the [v1.4.0 release](https://github.com/raleyj/storage-appliance/releases/tag/v1.4.0). Download all three numbered OVA parts and the reassembly script for your OS. The complete OVA exceeds GitHub's single-asset limit.
 
-Version **1.2.0** is the current general-availability build.
+Windows PowerShell: `./Join-Storage-Appliance-1.4.0.ps1`
 
-## Download
+Linux or macOS: `sh ./join-storage-appliance-1.4.0.sh`
 
-Download the assets from the [v1.2.0 release](https://github.com/raleyj/storage-appliance/releases/tag/v1.2.0).
+Expected reassembled OVA SHA-256: `155a224e720f626aa343922d092d05c171625d61b76f86caed7dd8efc7c75ee3`
 
-The OVA is larger than GitHub's per-file upload limit, so it is distributed as two numbered parts. Download both parts and either reassembly script, then reconstruct the OVA before deployment.
+The public metadata ZIP includes the OVF descriptor, manifest, detached checksum signature, public key, build-input SPDX SBOM, qualification results, and the [Administrator Guide](docs/Storage-Appliance-Administrator-Guide.docx), [Deployment Guide](docs/Storage-Appliance-Deployment-Guide.docx), and [Troubleshooting Guide](docs/Storage-Appliance-Troubleshooting-Guide.docx).
 
-### Windows PowerShell
+## Changes in 1.4.0
 
-```powershell
-.\Join-Storage-Appliance-1.2.0.ps1
-```
+- Optional Ubuntu `admin` password SSH, disabled by default, with a configurable port and administrator CIDR restrictions.
+- SSH service lifecycle and administrator network controls in Appliance management.
+- Harbor 2.14.6 offline bundle.
+- Correct first-time creation of `/home/admin` when the OS password is saved.
 
-### Linux or macOS
+The exact OVA passed 184 Linux tests, signature and OVF checks, and a fresh target-vCenter deployment covering SFTP, Harbor, subscribed Content Library synchronization, and password SSH. See [release notes](RELEASE-NOTES.md) for details.
 
-```bash
-chmod +x join-storage-appliance-1.2.0.sh
-./join-storage-appliance-1.2.0.sh
-```
-
-Expected OVA SHA-256:
-
-```text
-6d153a7bc0839c66e44f84563a5f606e3935aafb36b5d20079fa3f8635057d15
-```
-
-Existing 1.1 deployments can use the signed `Storage-Appliance-1.2.0-update.tar.gz` package through **Appliance updates**. Its SHA-256 is `c67c6c7b005b51cd97d3595b54a4c551c06b05998c08dc3f6e80a6b008d19889`.
-
-## What changed in 1.2.0
-
-- Generated SFTP client passwords are now 19 characters, keeping them below 20 characters while preserving cryptographically secure random generation.
-- Generated or newly entered SFTP passwords can be shown or copied before saving; saved password values remain non-retrievable and must be rotated if lost.
-- SFTP account enable, disable, and remove controls remain directly beneath each account status. Removal requires a disabled account and preserves the backup directory and files.
-- The deployment, administrator, and troubleshooting guides now document the 1.2 account lifecycle, password handling, signed update, and exact release validation.
-- A signed in-place update was validated on the live appliance with accounts, service configuration, and stored data preserved.
-
-## Deployment
-
-Deploy `Storage-Appliance-1.2.0.ova` through the vCenter **Deploy OVF Template** workflow. After first boot, open `https://<appliance-fqdn>/admin/`, install a trusted HTTPS certificate, and use the guided first-deployment workspace to initialize the required services.
-
-## Security model
-
-- No Ubuntu login, host SSH service, web terminal, or generic shell API
-- Default-deny host and container-ingress firewall
-- Separate service filesystems for SFTP, Harbor, and Content Library data
-- Masked OVA credential properties that can be cleared after initialization
-- Signed appliance updates with rollback to the prior software release
-- Restricted VMware console workflow for web-administrator recovery
-
-## Qualification
-
-The exact 1.2.0 OVA passed 167 Linux unit and security tests, OVF manifest and signed-checksum verification, VMware OVF Tool checks, and an import/first-boot smoke test with standard login enforcement. The signed 1.2.0 update was applied to the live appliance and verified with its configuration and service data preserved.
-
-See the smoke-validation record, live-upgrade validation record, and SPDX SBOM in the release metadata archive.
-
-## Supported scope and limitations
-
-- Target platform: VMware vCenter/ESXi 9.1.0, Ubuntu Server 24.04 LTS guest
-- Harbor vulnerability-database refresh and offline vulnerability scanning are not supported
-- Product-specific restore workflows require separate qualification
-- Appliance and service-data backup is intentionally not included
+This release supplies a new-deployment OVA. A 1.4.0 in-place update package and migration from earlier releases have not been qualified. Product-specific backup and restore still require site validation. Appliance and service-data backup are not included.
 
 No license is granted unless a license file is added to this repository.
